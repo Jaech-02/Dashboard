@@ -1,1 +1,56 @@
 /* You can add global styles to this file, and also import other style files */
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+@import 'leaflet/dist/leaflet.css';
+
+html, body { 
+  height: 100%; 
+  margin: 0;
+}
+
+body { 
+  margin: 0; 
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: #f5f5f5;
+}
+
+.mat-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+}
+
+.mat-sidenav-container {
+  height: calc(100vh - 64px);
+  margin-top: 64px;
+}
+
+.mat-sidenav {
+  width: 250px;
+}
+
+.content-container {
+  padding: 20px;
+}
+
+/* Estilos para los marcadores de Leaflet */
+.turbine-marker {
+  text-align: center;
+}
+
+.turbine-marker-active {
+  color: #4CAF50;
+}
+
+.turbine-marker-warning {
+  color: #FF9800;
+}
+
+.turbine-marker-error {
+  color: #F44336;
+}
+
+.leaflet-popup-content {
+  min-width: 200px;
+}

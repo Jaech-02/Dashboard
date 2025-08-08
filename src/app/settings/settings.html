@@ -1,0 +1,58 @@
+<div class="settings-container">
+  <h1>Configuración del Sistema</h1>
+
+  <mat-card class="settings-card">
+    <mat-card-header>
+      <mat-card-title>Preferencias de Monitoreo</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="settings-grid">
+        <div class="setting-item">
+          <mat-slide-toggle [(ngModel)]="settings.alertas">
+            Alertas de Estado
+          </mat-slide-toggle>
+          <div class="setting-description">
+            Recibir notificaciones cuando los parámetros estén fuera de rango
+          </div>
+        </div>
+
+        <div class="setting-item">
+          <mat-slide-toggle [(ngModel)]="settings.monitoreoAutomatico">
+            Monitoreo Automático
+          </mat-slide-toggle>
+          <div class="setting-description">
+            Actualizar datos automáticamente según el intervalo
+          </div>
+        </div>
+
+        <div class="setting-item">
+          <mat-form-field appearance="outline">
+            <mat-label>Intervalo de Actualización</mat-label>
+            <mat-select [(ngModel)]="settings.intervaloActualizacion">
+              @for (intervalo of intervalos; track intervalo.value) {
+                <mat-option [value]="intervalo.value">{{ intervalo.label }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+          <div class="setting-description">
+            Frecuencia de actualización de datos
+          </div>
+        </div>
+
+        <div class="setting-item">
+          <mat-form-field appearance="outline">
+            <mat-label>Unidad de Velocidad</mat-label>
+            <mat-select [(ngModel)]="settings.unidadVelocidad">
+              @for (unidad of unidades; track unidad.value) {
+                <mat-option [value]="unidad.value">{{ unidad.label }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+          <div class="setting-description">
+            Unidad de medida para la velocidad del viento
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
