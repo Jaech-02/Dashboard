@@ -96,7 +96,6 @@ export class Home implements OnInit, AfterViewInit {
   selectedTurbine: Turbine | null = null;
 
   ngOnInit() {
-    // Inicialización de datos si es necesario
   }
 
   ngAfterViewInit() {
@@ -161,10 +160,8 @@ export class Home implements OnInit, AfterViewInit {
   selectTurbine(turbine: Turbine) {
     this.selectedTurbine = turbine;
     
-    // Centrar el mapa en la turbina seleccionada
     this.map.setView([turbine.location.lat, turbine.location.lng], 14);
     
-    // Abrir el popup de la turbina seleccionada
     this.markers[turbine.id].openPopup();
   }
 }

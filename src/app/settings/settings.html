@@ -1,58 +1,220 @@
 <div class="settings-container">
   <h1>Configuración del Sistema</h1>
 
-  <mat-card class="settings-card">
-    <mat-card-header>
-      <mat-card-title>Preferencias de Monitoreo</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
+  <mat-accordion>
+    <mat-expansion-panel expanded>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Configuración de Alertas</mat-panel-title>
+      </mat-expansion-panel-header>
+
       <div class="settings-grid">
         <div class="setting-item">
-          <mat-slide-toggle [(ngModel)]="settings.alertas">
-            Alertas de Estado
+          <mat-slide-toggle [(ngModel)]="systemSettings.alertas.notificacionesActivas"
+            (change)="onSystemSettingsChange()">
+            Notificaciones de Alertas
           </mat-slide-toggle>
-          <div class="setting-description">
-            Recibir notificaciones cuando los parámetros estén fuera de rango
-          </div>
         </div>
 
         <div class="setting-item">
-          <mat-slide-toggle [(ngModel)]="settings.monitoreoAutomatico">
+          <mat-slide-toggle [(ngModel)]="systemSettings.alertas.alertasEmail"
+            [disabled]="!systemSettings.alertas.notificacionesActivas" (change)="onSystemSettingsChange()">
+            Alertas por Email
+          </mat-slide-toggle>
+        </div>
+
+        <div class="setting-item">
+          <mat-slide-toggle [(ngModel)]="systemSettings.alertas.alertasSMS"
+            [disabled]="!systemSettings.alertas.notificacionesActivas" (change)="onSystemSettingsChange()">
+            Alertas por SMS
+          </mat-slide-toggle>
+        </div>
+
+        <div class="setting-item">
+          <mat-form-field appearance="outline">
+            <mat-label>Intervalo de Notificaciones</mat-label>
+            <mat-select [(ngModel)]="systemSettings.alertas.intervaloNotificaciones"
+              [disabled]="!systemSettings.alertas.notificacionesActivas" (selectionChange)="onSystemSettingsChange()">
+              @for (intervalo of intervalosNotificacion; track intervalo.value) {
+              <mat-option [value]="intervalo.value">{{ intervalo.label }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Configuración de Monitoreo</mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <div class="settings-grid">
+        <div class="setting-item">
+          <mat-slide-toggle [(ngModel)]="systemSettings.monitoreo.monitoreoAutomatico"
+            (change)="onSystemSettingsChange()">
             Monitoreo Automático
           </mat-slide-toggle>
-          <div class="setting-description">
-            Actualizar datos automáticamente según el intervalo
-          </div>
         </div>
 
         <div class="setting-item">
           <mat-form-field appearance="outline">
             <mat-label>Intervalo de Actualización</mat-label>
-            <mat-select [(ngModel)]="settings.intervaloActualizacion">
-              @for (intervalo of intervalos; track intervalo.value) {
-                <mat-option [value]="intervalo.value">{{ intervalo.label }}</mat-option>
+            <mat-select [(ngModel)]="systemSettings.monitoreo.intervaloActualizacion"
+              [disabled]="!systemSettings.monitoreo.monitoreoAutomatico" (selectionChange)="onSystemSettingsChange()">
+              @for (intervalo of intervalosActualizacion; track intervalo.value) {
+              <mat-option [value]="intervalo.value">{{ intervalo.label }}</mat-option>
               }
             </mat-select>
           </mat-form-field>
-          <div class="setting-description">
-            Frecuencia de actualización de datos
-          </div>
+        </div>
+
+        <div class="setting-item">
+          <mat-slide-toggle [(ngModel)]="systemSettings.monitoreo.guardadoHistorico"
+            (change)="onSystemSettingsChange()">
+            Guardado de Históricos
+          </mat-slide-toggle>
         </div>
 
         <div class="setting-item">
           <mat-form-field appearance="outline">
-            <mat-label>Unidad de Velocidad</mat-label>
-            <mat-select [(ngModel)]="settings.unidadVelocidad">
-              @for (unidad of unidades; track unidad.value) {
-                <mat-option [value]="unidad.value">{{ unidad.label }}</mat-option>
+            <mat-label>Período de Retención de Datos</mat-label>
+            <mat-select [(ngModel)]="systemSettings.monitoreo.periodoRetencionDatos"
+              [disabled]="!systemSettings.monitoreo.guardadoHistorico" (selectionChange)="onSystemSettingsChange()">
+              @for (periodo of periodosRetencion; track periodo.value) {
+              <mat-option [value]="periodo.value">{{ periodo.label }}</mat-option>
               }
             </mat-select>
           </mat-form-field>
-          <div class="setting-description">
-            Unidad de medida para la velocidad del viento
+        </div>
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Unidades de Medida</mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <div class="settings-grid">
+        <div class="setting-item">
+          <mat-form-field appearance="outline">
+            <mat-label>Unidad de Velocidad</mat-label>
+            <mat-select [(ngModel)]="systemSettings.unidades.velocidadViento"
+              (selectionChange)="onSystemSettingsChange()">
+              @for (unidad of unidadesVelocidad; track unidad.value) {
+              <mat-option [value]="unidad.value">{{ unidad.label }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="setting-item">
+          <mat-form-field appearance="outline">
+            <mat-label>Unidad de Temperatura</mat-label>
+            <mat-select [(ngModel)]="systemSettings.unidades.temperatura" (selectionChange)="onSystemSettingsChange()">
+              @for (unidad of unidadesTemperatura; track unidad.value) {
+              <mat-option [value]="unidad.value">{{ unidad.label }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Configuración de Visualización</mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <div class="settings-grid">
+        <div class="setting-item">
+          <mat-slide-toggle [(ngModel)]="systemSettings.visualizacion.temaOscuro" (change)="onSystemSettingsChange()">
+            Tema Oscuro
+          </mat-slide-toggle>
+        </div>
+
+        <div class="setting-item">
+          <mat-slide-toggle [(ngModel)]="systemSettings.visualizacion.mostrarGraficosEnTiempoReal"
+            (change)="onSystemSettingsChange()">
+            Gráficos en Tiempo Real
+          </mat-slide-toggle>
+        </div>
+
+        <div class="setting-item">
+          <mat-form-field appearance="outline">
+            <mat-label>Actualización de Gráficos</mat-label>
+            <mat-select [(ngModel)]="systemSettings.visualizacion.intervaloActualizacionGraficos"
+              [disabled]="!systemSettings.visualizacion.mostrarGraficosEnTiempoReal"
+              (selectionChange)="onSystemSettingsChange()">
+              @for (intervalo of intervalosActualizacion; track intervalo.value) {
+              <mat-option [value]="intervalo.value">{{ intervalo.label }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <h2>Configuración de Aerogeneradores</h2>
+
+  <mat-accordion>
+    @for (turbine of turbineSettings; track turbine.id) {
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>{{ turbine.name }}</mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <div class="settings-grid">
+        <div class="setting-group">
+          <h3>Límites Operativos</h3>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Velocidad Mínima (m/s)</mat-label>
+            <input matInput type="number" [(ngModel)]="turbine.limites.velocidadMinima"
+              (change)="onTurbineSettingsChange(turbine)">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Velocidad Máxima (m/s)</mat-label>
+            <input matInput type="number" [(ngModel)]="turbine.limites.velocidadMaxima"
+              (change)="onTurbineSettingsChange(turbine)">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Temperatura Máxima (°C)</mat-label>
+            <input matInput type="number" [(ngModel)]="turbine.limites.temperaturaMaxima"
+              (change)="onTurbineSettingsChange(turbine)">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Eficiencia Mínima (%)</mat-label>
+            <input matInput type="number" [(ngModel)]="turbine.limites.eficienciaMinima"
+              (change)="onTurbineSettingsChange(turbine)">
+          </mat-form-field>
+        </div>
+
+        <div class="setting-group">
+          <h3>Mantenimiento</h3>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Última Revisión</mat-label>
+            <input matInput type="date" [(ngModel)]="turbine.mantenimiento.ultimaRevision"
+              (change)="onTurbineSettingsChange(turbine)">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Próxima Revisión</mat-label>
+            <input matInput type="date" [(ngModel)]="turbine.mantenimiento.proximaRevision"
+              (change)="onTurbineSettingsChange(turbine)">
+          </mat-form-field>
+
+          <div class="info-box">
+            <p>Horas de Operación: {{ turbine.mantenimiento.horasOperacion }} horas</p>
+            <p>Días hasta próxima revisión: {{ getDiasHastaRevision(turbine) }}</p>
           </div>
         </div>
       </div>
-    </mat-card-content>
-  </mat-card>
+    </mat-expansion-panel>
+    }
+  </mat-accordion>
 </div>

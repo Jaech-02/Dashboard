@@ -2,74 +2,70 @@
   <h1>Panel de Control - Parque Eólico</h1>
 
   <div class="dashboard-layout">
-    <!-- Mapa de Aerogeneradores -->
     <mat-card class="map-card">
       <mat-card-header>
         <mat-card-title>Ubicación de Aerogeneradores</mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <div class="map-container">
-          <!-- Aquí irá el mapa de Leaflet -->
           <div id="map" style="height: 400px;"></div>
         </div>
       </mat-card-content>
     </mat-card>
 
-    <!-- Lista de Aerogeneradores -->
     <div class="turbines-list">
       @for (turbine of turbines; track turbine.id) {
-        <mat-card class="turbine-card" 
-                  [class.selected]="selectedTurbine?.id === turbine.id"
-                  (click)="selectTurbine(turbine)">
-          <mat-card-content>
-            <div class="turbine-header">
-              <div class="turbine-title">
-                <h3>{{ turbine.name }}</h3>
-                <mat-icon [style.color]="getStatusColor(turbine.status)">
-                  {{ getStatusIcon(turbine.status) }}
-                </mat-icon>
-              </div>
-              <div class="turbine-location">
-                {{ turbine.location.lat }}° N, {{ turbine.location.lng }}° W
-              </div>
+      <mat-card class="turbine-card" [class.selected]="selectedTurbine?.id === turbine.id"
+        (click)="selectTurbine(turbine)">
+        <mat-card-content>
+          <div class="turbine-header">
+            <div class="turbine-title">
+              <h3>{{ turbine.name }}</h3>
+              <mat-icon [style.color]="getStatusColor(turbine.status)">
+                {{ getStatusIcon(turbine.status) }}
+              </mat-icon>
             </div>
-            
-            <div class="turbine-data-grid">
-              <div class="data-item">
-                <mat-icon>air</mat-icon>
-                <div class="data-info">
-                  <span class="data-label">Viento</span>
-                  <span class="data-value">{{ turbine.data.windSpeed }}</span>
-                </div>
-              </div>
-              <div class="data-item">
-                <mat-icon>bolt</mat-icon>
-                <div class="data-info">
-                  <span class="data-label">Potencia</span>
-                  <span class="data-value">{{ turbine.data.power }}</span>
-                </div>
-              </div>
-              <div class="data-item">
-                <mat-icon>device_thermostat</mat-icon>
-                <div class="data-info">
-                  <span class="data-label">Temperatura</span>
-                  <span class="data-value">{{ turbine.data.temperature }}</span>
-                </div>
-              </div>
-              <div class="data-item">
-                <mat-icon>rotate_right</mat-icon>
-                <div class="data-info">
-                  <span class="data-label">RPM</span>
-                  <span class="data-value">{{ turbine.data.rpm }}</span>
-                </div>
-              </div>
+            <div class="turbine-location">
+              {{ turbine.location.lat }}° N, {{ turbine.location.lng }}° W
             </div>
+          </div>
 
-            <div class="turbine-footer">
-              Última actualización: {{ turbine.lastUpdate }}
+          <div class="turbine-data-grid">
+            <div class="data-item">
+              <mat-icon>air</mat-icon>
+              <div class="data-info">
+                <span class="data-label">Viento</span>
+                <span class="data-value">{{ turbine.data.windSpeed }}</span>
+              </div>
             </div>
-          </mat-card-content>
-        </mat-card>
+            <div class="data-item">
+              <mat-icon>bolt</mat-icon>
+              <div class="data-info">
+                <span class="data-label">Potencia</span>
+                <span class="data-value">{{ turbine.data.power }}</span>
+              </div>
+            </div>
+            <div class="data-item">
+              <mat-icon>device_thermostat</mat-icon>
+              <div class="data-info">
+                <span class="data-label">Temperatura</span>
+                <span class="data-value">{{ turbine.data.temperature }}</span>
+              </div>
+            </div>
+            <div class="data-item">
+              <mat-icon>rotate_right</mat-icon>
+              <div class="data-info">
+                <span class="data-label">RPM</span>
+                <span class="data-value">{{ turbine.data.rpm }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="turbine-footer">
+            Última actualización: {{ turbine.lastUpdate }}
+          </div>
+        </mat-card-content>
+      </mat-card>
       }
     </div>
   </div>

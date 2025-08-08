@@ -1,23 +1,49 @@
 <div class="analytics-container">
-  <h1>Análisis de Rendimiento</h1>
-  
+  <div class="analytics-header">
+    <h1>Análisis de Rendimiento</h1>
+
+    <div class="controls">
+      <mat-form-field appearance="outline" class="turbine-select">
+        <mat-label>Seleccionar Aerogeneradores</mat-label>
+        <mat-select [(ngModel)]="selectedTurbines" multiple>
+          @for (turbine of turbines; track turbine.id) {
+          <mat-option [value]="turbine.id">{{ turbine.name }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-button-toggle-group [(ngModel)]="timeRange" class="time-range">
+        @for (range of timeRanges; track range.value) {
+        <mat-button-toggle [value]="range.value">
+          {{ range.label }}
+        </mat-button-toggle>
+        }
+      </mat-button-toggle-group>
+    </div>
+  </div>
+
   <div class="charts-grid">
     <mat-card class="chart-card">
       <mat-card-header>
-        <mat-card-title>{{ analyticsData.powerGeneration.titulo }}</mat-card-title>
+        <mat-card-title>Generación de Energía</mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <div class="chart-placeholder">
-          <div class="placeholder-text">Gráfico de Generación de Energía</div>
+          <div class="placeholder-text">Gráfico Comparativo de Generación</div>
           <div class="chart-info">
-            <div class="info-item">
-              <span class="label">Promedio:</span>
-              <span class="value">2.4 MW</span>
+            @for (turbineId of selectedTurbines; track turbineId) {
+            <div class="turbine-info">
+              <h4>{{ getTurbineName(turbineId) }}</h4>
+              <div class="info-item">
+                <span class="label">Promedio:</span>
+                <span class="value">{{ getAverageValue(turbineId, 'powerGeneration') }}</span>
+              </div>
+              <div class="info-item">
+                <span class="label">Máximo:</span>
+                <span class="value">{{ getMaxValue(turbineId, 'powerGeneration') }}</span>
+              </div>
             </div>
-            <div class="info-item">
-              <span class="label">Máximo:</span>
-              <span class="value">2.7 MW</span>
-            </div>
+            }
           </div>
         </div>
       </mat-card-content>
@@ -25,20 +51,25 @@
 
     <mat-card class="chart-card">
       <mat-card-header>
-        <mat-card-title>{{ analyticsData.windSpeed.titulo }}</mat-card-title>
+        <mat-card-title>Velocidad del Viento</mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <div class="chart-placeholder">
-          <div class="placeholder-text">Gráfico de Velocidad del Viento</div>
+          <div class="placeholder-text">Gráfico Comparativo de Velocidad</div>
           <div class="chart-info">
-            <div class="info-item">
-              <span class="label">Promedio:</span>
-              <span class="value">15.2 m/s</span>
+            @for (turbineId of selectedTurbines; track turbineId) {
+            <div class="turbine-info">
+              <h4>{{ getTurbineName(turbineId) }}</h4>
+              <div class="info-item">
+                <span class="label">Promedio:</span>
+                <span class="value">{{ getAverageValue(turbineId, 'windSpeed') }}</span>
+              </div>
+              <div class="info-item">
+                <span class="label">Máximo:</span>
+                <span class="value">{{ getMaxValue(turbineId, 'windSpeed') }}</span>
+              </div>
             </div>
-            <div class="info-item">
-              <span class="label">Máximo:</span>
-              <span class="value">18.0 m/s</span>
-            </div>
+            }
           </div>
         </div>
       </mat-card-content>
@@ -46,16 +77,21 @@
 
     <mat-card class="chart-card">
       <mat-card-header>
-        <mat-card-title>{{ analyticsData.efficiency.titulo }}</mat-card-title>
+        <mat-card-title>Eficiencia</mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <div class="chart-placeholder">
-          <div class="placeholder-text">Gráfico de Eficiencia</div>
+          <div class="placeholder-text">Gráfico Comparativo de Eficiencia</div>
           <div class="chart-info">
-            <div class="info-item">
-              <span class="label">Promedio:</span>
-              <span class="value">87%</span>
+            @for (turbineId of selectedTurbines; track turbineId) {
+            <div class="turbine-info">
+              <h4>{{ getTurbineName(turbineId) }}</h4>
+              <div class="info-item">
+                <span class="label">Promedio:</span>
+                <span class="value">{{ getAverageValue(turbineId, 'efficiency') }}</span>
+              </div>
             </div>
+            }
           </div>
         </div>
       </mat-card-content>
@@ -63,16 +99,21 @@
 
     <mat-card class="chart-card">
       <mat-card-header>
-        <mat-card-title>{{ analyticsData.windDirection.titulo }}</mat-card-title>
+        <mat-card-title>Dirección del Viento</mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <div class="chart-placeholder">
-          <div class="placeholder-text">Rosa de los Vientos</div>
+          <div class="placeholder-text">Rosa de los Vientos Comparativa</div>
           <div class="chart-info">
-            <div class="info-item">
-              <span class="label">Dirección Predominante:</span>
-              <span class="value">NE</span>
+            @for (turbineId of selectedTurbines; track turbineId) {
+            <div class="turbine-info">
+              <h4>{{ getTurbineName(turbineId) }}</h4>
+              <div class="info-item">
+                <span class="label">Dirección Predominante:</span>
+                <span class="value">{{ getPredominantDirection(turbineId) }}</span>
+              </div>
             </div>
+            }
           </div>
         </div>
       </mat-card-content>
