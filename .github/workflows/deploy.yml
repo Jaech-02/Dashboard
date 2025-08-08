@@ -24,10 +24,20 @@ jobs:
           npm install
           npm install -g @angular/cli
           npm install angular-cli-ghpages --save-dev
+          npm install @angular/material @angular/cdk
+          npm install leaflet @types/leaflet
+
+      - name: Fix CommonJS dependencies
+        run: |
+          echo '{
+            "allowedCommonJsDependencies": [
+              "leaflet"
+            ]
+          }' >> angular.json
 
       - name: Build
         run: |
-          ng build --configuration production --base-href="/Dashboard/"
+          ng build --configuration production --base-href="/Dashboard/" --verbose
           cp dist/dashboard/browser/index.html dist/dashboard/browser/404.html
 
       - name: Deploy to GitHub Pages
