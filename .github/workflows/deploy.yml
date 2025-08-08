@@ -6,9 +6,17 @@ on:
       - main
   workflow_dispatch:
 
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: Checkout
@@ -40,12 +48,15 @@ jobs:
           ng build --configuration production --base-href="/Dashboard/" --verbose
           cp dist/dashboard/browser/index.html dist/dashboard/browser/404.html
 
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
       - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
+        id: deployment
+        uses: actions/deploy-pages@v4
         with:
-          branch: gh-pages
-          folder: dist/dashboard/browser
-          clean: true
+          artifact_name: github-pages
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
